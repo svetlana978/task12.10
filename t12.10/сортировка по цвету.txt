@@ -1,0 +1,23 @@
+const comparation = (fruits1, fruits2) => {
+        const priority = ['розово-красный', 'светло-коричневый', 'желтый', 'зеленый', 'фиолетовый']
+        const priority1 = priority.indexOf(fruits1.color);
+        const priority2 = priority.indexOf(fruits2.color);
+        return priority1 > priority2;
+    }
+
+
+    for (let i = 0, l = fruits.length, k = l - 1; i < k; i++) {
+        let indexMin = i;
+
+        for (let j = i + 1; j < l; j++) {
+            if (comparation(fruits[indexMin], fruits[j])) {
+                indexMin = j;
+            }
+        }
+
+        if (indexMin !== i) {
+            [fruits[i], fruits[indexMin]] = [fruits[indexMin], fruits[i]];
+        }
+
+        return fruits;
+    };

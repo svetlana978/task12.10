@@ -124,28 +124,13 @@ shuffleButton.addEventListener('click', () => {
 
 // фильтрация массива
 const filterFruits = () => {
-    fruits.filter((item) => {
+    const minWeight = document.getElementsByClassName('minweight__input')[0];
+    const maxWeight = document.getElementsByClassName('maxweight__input')[0];
+    let result = fruits.filter((item) =>
+        item.weight <= maxWeight.value && item.weight >= minWeight.value
+    );
 
-        const comparation = (fruits1, fruits2) => {
-            return fruits1.weight > fruits2.weight;
-        };
-
-        const insertionSort = (arr, comparation) => {
-            // обход массива
-            for (let i = 1, l = arr.length; i < l; i++) {
-                const current = arr[i];
-                let j = i;
-
-                while (j > 0 && comparation(arr[j - 1], current)) {
-                    arr[j] = arr[j - 1];
-                    j--;
-                }
-                arr[j] = current;
-            }
-        }
-
-        insertionSort(fruits, comparation);
-    });
+    fruits = result;
 };
 
 filterButton.addEventListener('click', () => {
@@ -158,34 +143,13 @@ filterButton.addEventListener('click', () => {
 let sortKind = 'bubbleSort'; // инициализация состояния вида сортировки
 let sortTime = '-'; // инициализация состояния времени сортировки
 
-const comparationColor = (fruits, comparation) => {
+const comparationColor = (fruit1, fruit2) => {
     // TODO: допишите функцию сравнения двух элементов по цвету
-    const comparation = (fruits1, fruits2) => {
-        const priority = ['розово-красный', 'светло-коричневый', 'желтый', 'зеленый', 'фиолетовый']
-        const priority1 = priority.indexOf(fruits1.color);
-        const priority2 = priority.indexOf(fruits2.color);
-        return priority1 > priority2;
-    }
-
-
-    for (let i = 0, l = fruits.length, k = l - 1; i < k; i++) {
-        let indexMin = i;
-
-        for (let j = i + 1; j < l; j++) {
-            if (comparation(fruits[indexMin], fruits[j])) {
-                indexMin = j;
-            }
-        }
-
-        if (indexMin !== i) {
-            [fruits[i], fruits[indexMin]] = [fruits[indexMin], fruits[i]];
-        }
-
-        return fruits;
-    };
+    const priority = ['розово-красный', 'светло-коричневый', 'желтый', 'зеленый', 'фиолетовый']
+    const priority1 = priority.indexOf(fruit1.color);
+    const priority2 = priority.indexOf(fruit2.color);
+    return priority1 > priority2;
 };
-
-
 
 const sortAPI = {
 
@@ -195,6 +159,23 @@ const sortAPI = {
         sort(arr, comparation);
         const end = new Date().getTime();
         sortTime = `${end - start} ms`;
+    },
+
+    bubbleSort(arr, comparation) {
+        const n = arr.length;
+        // внешняя итерация по элементам
+        for (let i = 0; i < n - 1; i++) {
+            // внутренняя итерация для перестановки элемента в конец массива
+            for (let j = 0; j < n - 1 - i; j++) {
+                // сравниваем элементы
+                if (comparation(arr[j], arr[j + 1])) {
+                    // делаем обмен элементов
+                    let temp = arr[j + 1];
+                    arr[j + 1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
     },
 };
 
